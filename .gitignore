@@ -1,0 +1,40 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output directories
+/bin/
+/build/
+/dist/
+
+# Vendor directory (if not vendoring manually)
+vendor/
+
+# Go workspace files
+/pkg/
+/pkg/mod/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# IDE/editor stuff
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Environment config
+.env*
+*.yaml
+*.yml
+*.key
+*.cert
+*.pem
+
+# Test data
+/testdata/
