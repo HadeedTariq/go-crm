@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/hadeedtariq/go-crm/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -20,17 +19,17 @@ func ConnectToDatabase() {
 		log.Fatal("Failed to connect to database: ", err)
 	}
 
-	err = database.AutoMigrate(
-		&models.User{},
-		&models.Deal{},
-		&models.Account{},
-		&models.Activity{},
-		&models.Contact{},
-	)
+	// err = database.AutoMigrate(
+	// 	&models.User{},
+	// 	&models.Deal{},
+	// 	&models.Account{},
+	// 	&models.Activity{},
+	// 	&models.Contact{},
+	// )
 
-	if err != nil {
-		log.Fatal("Failed to auto-migrate:", err)
-	}
+	// if err != nil {
+	// 	log.Fatal("Failed to auto-migrate:", err)
+	// }
 	DB = database
 }
 

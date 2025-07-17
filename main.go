@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/hadeedtariq/go-crm/config"
 	"github.com/hadeedtariq/go-crm/routes"
+	"github.com/hadeedtariq/go-crm/validators"
 	"github.com/joho/godotenv"
 )
 
@@ -18,11 +19,12 @@ func main() {
 	config.ConnectToDatabase()
 
 	router := gin.Default()
-	templates := template.Must(template.ParseGlob("templates/**/*"))
+	templates := template.Must(template.ParseGlob("templates/*"))
 
 	router.SetHTMLTemplate(templates)
+	validators.InitValidator()
 
-	routes.RegisterRoutes(router)
+	routes.AuthRoutes(router)
 
 	router.Run(":3000")
 }
