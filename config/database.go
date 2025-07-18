@@ -2,8 +2,8 @@ package config
 
 import (
 	"log"
-	"os"
 
+	"github.com/hadeedtariq/go-crm/utils"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -11,7 +11,7 @@ import (
 var DB *gorm.DB
 
 func ConnectToDatabase() {
-	dsn := getEnv("DB_CONN_STRING", "kaka")
+	dsn := utils.GetEnv("DB_CONN_STRING", "kaka")
 
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
@@ -31,11 +31,4 @@ func ConnectToDatabase() {
 	// 	log.Fatal("Failed to auto-migrate:", err)
 	// }
 	DB = database
-}
-
-func getEnv(key, fallback string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return fallback
 }

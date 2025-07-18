@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/hadeedtariq/go-crm/config"
 	"github.com/hadeedtariq/go-crm/models"
+	"github.com/hadeedtariq/go-crm/utils"
 	"github.com/hadeedtariq/go-crm/validators"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -67,4 +70,81 @@ func RegisterUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User registered successfully"})
+}
+
+type LoginData struct {
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=6"`
+}
+
+type MyCustomClaims struct {
+	UserID string `json:"user_id"`
+	Role   string `json:"role"`
+	Email  string `json:"email"`
+	Name   string `json:"name"`
+	jwt.RegisteredClaims
+}
+
+var jwtSecret = utils.GetEnv("JWT_SECRET_KEY", "hadeedbhai")
+
+func LoginUser(c *gin.Context) {
+	var data LoginData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid input format",
+			"details": err.Error(),
+		})
+		return
+	}
+
+	var user models.User
+	result := config.DB.Where("email = ?", data.Email).First(&user)
+	if result.Error != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		return
+	}
+
+	claims := MyCustomClaims{
+		UserID: user.ID.String(),
+		Role:   user.Role,
+		Email:  user.Email,
+		Name:   user.Name,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			NotBefore: jwt.NewNumericDate(time.Now()),
+			Issuer:    "Go-Crm",
+			Subject:   user.ID.String(),
+		},
+	}
+
+	// Use HS256 for string-based secret
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString([]byte(jwtSecret))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Token generation failed"})
+		return
+	}
+
+	// Cookie settings – adjust domain in prod
+	c.SetCookie(
+		"jwt_token",
+		tokenString,
+		int(24*time.Hour.Seconds()),
+		"/",
+		"localhost",
+		true, // Secure (HTTPS only)
+		true, // HttpOnly
+	)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Login successful",
+	})
 }
