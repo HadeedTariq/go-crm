@@ -23,7 +23,10 @@ func main() {
 	router.SetHTMLTemplate(utils.LoadTemplates("templates"))
 	validators.InitValidator()
 
-	routes.AuthRoutes(router)
+	api := router.Group("/api")
+
+	routes.AuthRoutes(api)
+	routes.LeadRoutes(api)
 
 	router.Run(":3000")
 }

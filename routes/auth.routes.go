@@ -7,8 +7,8 @@ import (
 	"github.com/hadeedtariq/go-crm/controllers/auth"
 )
 
-func AuthRoutes(router *gin.Engine) {
-	authApi := router.Group("/api/auth")
+func AuthRoutes(router *gin.RouterGroup) {
+	authApi := router.Group("/auth")
 	{
 		authApi.GET("/")
 
