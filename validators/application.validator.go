@@ -23,4 +23,16 @@ func InitValidator() {
 
 		return validRoles[role]
 	})
+	Validate.RegisterValidation("dealstage", func(fl validator.FieldLevel) bool {
+		stage := strings.ToLower(fl.Field().String())
+
+		validStages := map[string]bool{
+			"prospecting": true,
+			"negotiation": true,
+			"closed_won":  true,
+			"closed_lost": true,
+		}
+
+		return validStages[stage]
+	})
 }
