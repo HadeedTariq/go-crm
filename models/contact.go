@@ -7,36 +7,38 @@ import (
 )
 
 // CREATE TYPE lead_status AS ENUM ('new', 'working', 'qualified', 'unqualified');
-// CREATE TYPE lead_source AS ENUM (
-//   'Website',
-//   'Referral',
-//   'LinkedIn',
-//   'Facebook',
-//   'Twitter',
-//   'Instagram',
-//   'YouTube',
-//   'Google Ads',
-//   'Facebook Ads',
-//   'Instagram Ads',
-//   'LinkedIn Ads',
-//   'Email Campaign',
-//   'Cold Call',
-//   'Direct Visit',
-//   'Webinar',
-//   'Conference',
-//   'Networking Event',
-//   'Partnership',
-//   'Reseller',
-//   'Inbound',
-//   'Outbound',
-//   'Landing Page',
-//   'Live Chat',
-//   'Customer Support',
-//   'SEO',
-//   'Organic Search',
-//   'Paid Search',
-//   'Other'
-// );
+
+/*
+CREATE TYPE lead_source AS ENUM (
+  'Website',
+  'Referral',
+  'LinkedIn',
+  'Facebook',
+  'Twitter',
+  'Instagram',
+  'YouTube',
+  'Google Ads',
+  'Facebook Ads',
+  'Instagram Ads',
+  'LinkedIn Ads',
+  'Email Campaign',
+  'Cold Call',
+  'Direct Visit',
+  'Webinar',
+  'Conference',
+  'Networking Event',
+  'Partnership',
+  'Reseller',
+  'Inbound',
+  'Outbound',
+  'Landing Page',
+  'Live Chat',
+  'Customer Support',
+  'SEO',
+  'Organic Search',
+  'Paid Search',
+  'Other'
+);*/
 
 type Contact struct {
 	ID          uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primaryKey"`
