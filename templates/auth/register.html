@@ -1,4 +1,4 @@
-{{ define "title" }}Register{{ end }} {{ define "content" }}
+{{ define "auth/register.html" }}
 <h2>Register</h2>
 <form method="POST" action="/api/auth/register">
   <label>Name:</label><br />
@@ -15,5 +15,5 @@
 
   <button type="submit">Register</button>
 </form>
-<a href="/login">Already have an account? Login</a>
+<a href="login">Already have an account? Login</a>
 {{ end }}
