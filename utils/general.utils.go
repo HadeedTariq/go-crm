@@ -1,4 +1,3 @@
-// utils/template_loader.go
 package utils
 
 import (
@@ -30,16 +29,15 @@ func LoadTemplates(root string) *template.Template {
 			return nil
 		}
 
-		// Only parse HTML files
-		if filepath.Ext(path) == ".html" {
+		if filepath.Ext(path) == ".htmx" {
 			relPath, err := filepath.Rel(root, path)
 			if err != nil {
 				return err
 			}
-			templateName := filepath.ToSlash(relPath) // Ensure forward slashes for template names
 
-			// Parse the file and associate it with its relative path name
-			_, err = tmpl.ParseFiles(path) // This correctly adds the template content under its 'path' name
+			templateName := filepath.ToSlash(relPath)
+
+			_, err = tmpl.ParseFiles(path)
 			if err != nil {
 				log.Printf("Error parsing template %q: %v", path, err)
 				return err

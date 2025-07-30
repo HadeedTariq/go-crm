@@ -1,10 +1,9 @@
 package routes
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/hadeedtariq/go-crm/controllers/leads"
+	"github.com/hadeedtariq/go-crm/handlers"
 )
 
 func LeadRoutes(router *gin.RouterGroup) {
@@ -17,10 +16,7 @@ func LeadRoutes(router *gin.RouterGroup) {
 	{
 		contacts.POST("/create", leads.CreateContact)
 		contacts.GET("/create", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "layout.html", gin.H{
-				"Title":           "Create New Contact",
-				"ContentTemplate": "leads/create-contact.html",
-			})
+			handlers.Render(c, "Create Contact")
 		})
 	}
 
