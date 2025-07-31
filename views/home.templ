@@ -1,0 +1,15 @@
+package views
+
+import "./layout.templ"
+
+templ Home() {
+layout("Home",
+<div>
+    <h1 class="text-3xl font-bold mb-4">Welcome to Templ + HTMX + Gin</h1>
+    <button hx-get="/api/partial" hx-target="#result" class="bg-blue-600 text-white px-4 py-2 rounded">
+        Load More
+    </button>
+    <div id="result" class="mt-4"></div>
+</div>
+)
+}

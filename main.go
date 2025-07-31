@@ -7,7 +7,6 @@ import (
 	"github.com/hadeedtariq/go-crm/config"
 	"github.com/hadeedtariq/go-crm/handlers"
 	"github.com/hadeedtariq/go-crm/routes"
-	"github.com/hadeedtariq/go-crm/utils"
 	"github.com/hadeedtariq/go-crm/validators"
 	"github.com/joho/godotenv"
 )
@@ -21,18 +20,12 @@ func main() {
 
 	router := gin.Default()
 
-	router.SetHTMLTemplate(utils.LoadTemplates("templates"))
-
 	validators.InitValidator()
 
 	api := router.Group("/api")
 
-	api.GET("/", func(c *gin.Context) {
-		handlers.Render(c, "Htmx Home page")
-	})
-	api.GET("/create", func(c *gin.Context) {
-		handlers.Render(c, "Create Contact")
-	})
+	api.GET("/", handlers.Home)
+	api.GET("/partials", handlers.Partial)
 
 	routes.AuthRoutes(api)
 	routes.LeadRoutes(api)
